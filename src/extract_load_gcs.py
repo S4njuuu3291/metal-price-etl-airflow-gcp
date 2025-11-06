@@ -5,7 +5,7 @@ from airflow.hooks.base import BaseHook
 from datetime import datetime
 import json
 
-def extract_from_api():
+def extract_from_api(**context):
     conn = BaseHook.get_connection("metal_dev_api")
     
     base_url = conn.host
@@ -15,14 +15,15 @@ def extract_from_api():
     try:
         logging.info("Starting extract metal price from API")
         response = requests.get(url).json()
+        context["ti"].xcom_push(key = "raw_metal_data",value = response)
         logging.info("Completed extract metal price from API")
     except Exception as e:
         logging.error(f"Error during API extraction: {e}")
         raise
-    return response
+    return "Good"
 
-def load_to_gcs(raw_data,bucket_name):
-    
+def load_to_gcs(bucket_name,**context):
+    raw_data = context["ti"].xcom_pull(key = "raw_metal_data",task_ids = 'extract_from_api')
     today = datetime.now().strftime("%Y-%m-%d: %H-%M")
     dest_path = f"raw/{today}/metal_price.json"
     try:
