@@ -31,7 +31,7 @@ def create_data_warehouse():
     # ---------- Fact: Metal Price ----------
     schema_fact_metal_price = [
         bigquery.SchemaField("id", "INT64", mode="REQUIRED"),
-        bigquery.SchemaField("date", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("date", "TIMESTAMP", mode="REQUIRED"),
         bigquery.SchemaField("metal_id", "INT64", mode="NULLABLE"),
         bigquery.SchemaField("unit", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("price_usd", "FLOAT64", mode="NULLABLE"),
@@ -44,7 +44,7 @@ def create_data_warehouse():
     # ---------- Fact: Currency Rates ----------
     schema_fact_currency_rates = [
         bigquery.SchemaField("currency_code", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("date", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("date", "TIMESTAMP", mode="REQUIRED"),
         bigquery.SchemaField("rate_to_usd", "FLOAT64", mode="NULLABLE"),
     ]
     table_id = "metal-price-pipeline.metal_price_dw.fact_currency_rates"

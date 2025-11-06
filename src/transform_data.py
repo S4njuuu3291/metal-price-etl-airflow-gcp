@@ -2,6 +2,7 @@ import logging
 import json
 from datetime import datetime
 from extract_load_gcs import extract_from_api
+from uuid import uuid4
 
 def transform_data(**context):
     logging.info("Transforming data")
@@ -13,7 +14,7 @@ def transform_data(**context):
             "platinum": 3,
             "palladium": 4,
             "copper": 5,
-            "aluminium": 6,
+            "aluminum": 6,
             "lead": 7,
             "nickel": 8,
             "zinc": 9
@@ -23,13 +24,16 @@ def transform_data(**context):
     # Transform raw data for fact_metal_price
     metal_list = ["gold","silver","platinum","palladium","copper","aluminum","lead","nickel","zinc"]
     
-    for metal in metal_list:
-        data_fact_metal_price = {
+    data_fact_metal_price = [
+        {
+            "id": uuid4().int % (10**15),
             "date":raw_data["timestamps"]["metal"],
             "metal_id":metal_id_mapper(metal),
             "unit":raw_data["unit"],
             "price_usd":raw_data["metals"][metal]
         }
+        for metal in metal_list
+    ]
     
     # Transform raw data for fact_currency_rates
     currency_rates = raw_data["currencies"]

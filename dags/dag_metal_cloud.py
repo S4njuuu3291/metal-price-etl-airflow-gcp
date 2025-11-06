@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 
 
 default_args = {
-    "start_date": datetime(2025,11,7,0,0,0),
+    "start_date": datetime(2025,10,6,18,0,0),
     # "retries": 1,
     # "retry_delay": timedelta(minutes=5),
 }

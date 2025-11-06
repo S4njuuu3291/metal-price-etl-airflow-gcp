@@ -6,10 +6,11 @@ def validate_transformed_data(**context):
     currency_rates_data = context["ti"].xcom_pull(key = "data_fact_currency_rates",task_ids = "transform_data")
     
     try:
-        assert "date" in metal_price_data
-        assert "metal_id" in metal_price_data
-        assert "unit" in metal_price_data
-        assert "price_usd" in metal_price_data
+        for record in metal_price_data:
+            assert "date" in record
+            assert "metal_id" in record
+            assert "unit" in record
+            assert "price_usd" in record
         
         for record in currency_rates_data:
             assert "currency_code" in record
